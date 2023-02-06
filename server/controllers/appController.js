@@ -99,7 +99,7 @@ export async function login(req, res) {
                 username: user.username,
               },
               ENV.JWT_SECRET,
-              { expiresIn: '24h' }
+              { expiresIn: '10h' }
             );
 
             return res.status(200).send({
