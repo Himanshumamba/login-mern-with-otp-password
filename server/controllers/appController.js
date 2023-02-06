@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
 import otpGenerator from 'otp-generator';
 
-/** middleware for verify user */
+
 export async function verifyUser(req, res, next) {
   try {
     const { username } = req.method == 'GET' ? req.query : req.body;
@@ -18,18 +18,7 @@ export async function verifyUser(req, res, next) {
   }
 }
 
-/** POST: http://localhost:8080/api/register 
- * @param : {
-  "username" : "example123",
-  "password" : "admin123",
-  "email": "example@gmail.com",
-  "firstName" : "bill",
-  "lastName": "william",
-  "mobile": 8009860560,
-  "address" : "Apt. 556, Kulas Light, Gwenborough",
-  "profile": ""
-}
-*/
+
 export async function register(req, res) {
   try {
     const { username, password, profile, email } = req.body;
@@ -90,12 +79,7 @@ export async function register(req, res) {
   }
 }
 
-/** POST: http://localhost:8080/api/login 
- * @param: {
-  "username" : "example123",
-  "password" : "admin123"
-}
-*/
+
 export async function login(req, res) {
   const { username, password } = req.body;
 
@@ -136,7 +120,7 @@ export async function login(req, res) {
   }
 }
 
-/** GET: http://localhost:8080/api/user/example123 */
+
 export async function getUser(req, res) {
   const { username } = req.params;
 
@@ -159,16 +143,7 @@ export async function getUser(req, res) {
   }
 }
 
-/** PUT: http://localhost:8080/api/updateuser 
- * @param: {
-  "header" : "<token>"
-}
-body: {
-    firstName: '',
-    address : '',
-    profile : ''
-}
-*/
+
 export async function updateUser(req, res) {
   try {
     // const id = req.query.id;
@@ -191,7 +166,6 @@ export async function updateUser(req, res) {
   }
 }
 
-/** GET: http://localhost:8080/api/generateOTP */
 export async function generateOTP(req, res) {
   req.app.locals.OTP = await otpGenerator.generate(6, {
     lowerCaseAlphabets: false,
@@ -199,9 +173,7 @@ export async function generateOTP(req, res) {
     specialChars: false,
   });
   res.status(201).send({ code: req.app.locals.OTP });
-}
 
-/** GET: http://localhost:8080/api/verifyOTP */
 export async function verifyOTP(req, res) {
   const { code } = req.query;
   if (parseInt(req.app.locals.OTP) === parseInt(code)) {
@@ -212,8 +184,6 @@ export async function verifyOTP(req, res) {
   return res.status(400).send({ error: 'Invalid OTP' });
 }
 
-// successfully redirect user when OTP is valid
-/** GET: http://localhost:8080/api/createResetSession */
 export async function createResetSession(req, res) {
   if (req.app.locals.resetSession) {
     return res.status(201).send({ flag: req.app.locals.resetSession });
